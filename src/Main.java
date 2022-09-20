@@ -1,39 +1,67 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class Main {
     public static void main(String[] args){
         System.out.println("Hello, you've started the Duplicate Checker Application");
         printMenu();
         Scanner scanner = new Scanner(System.in);
-        while(scanner.hasNextInt()){
-            switch (scanner.nextInt()){
-                case 1 -> {
-                    System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                    System.out.println("Input your text");
-                    checkDuplicateWords();
+        while(scanner.hasNextLine()){
+            try {
+                switch (scanner.nextInt()) {
+                    case 1 -> {
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        checkDuplicateWords();
+                    }
+                    case 2 -> {
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        checkDuplicateLines();
+                    }
+                    case 3 -> {
+                        System.out.println("Firstly, provide the text which will be used to count the number of occurrences of a word");
+                        System.out.println("Secondly, provide the word itself");
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        findWord();
+                    }
+                    case 4 -> {
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        countEachWord();
+                    }
+                    case 5 -> {
+                        System.out.println("Goodbye");
+                        return;
+                    }
+                    default -> System.out.println("Wrong input");
                 }
-                case 2 ->{
-                    System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                    System.out.println("Input your text");
-                    checkDuplicateLines();
-                }
-                case 3 ->{
-                    System.out.println("Firstly, provide the text which will be used to count the number of occurrences of a word");
-                    System.out.println("Secondly, provide the word itself");
-                    System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                    findWord();
-                }
-                case 4 -> {
-                    System.out.println("Goodbye");
-                    return;
-                }
-                default -> System.out.println("Wrong input");
+                printMenu();
+            }catch (InputMismatchException e){
+                System.out.println("Invalid input");
+                printMenu();
+                scanner.nextLine();
             }
-            printMenu();
+
+        }
+
+    }
+    public static void countEachWord(){
+        String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
+        text = removePunctuation(text);
+        String[] words = text.split("\\s+");
+        HashMap<String, Integer> wordsMap = new HashMap<>();
+        Arrays.stream(words).forEach(word->{
+            if(wordsMap.containsKey(word)){
+                wordsMap.put(word, wordsMap.get(word)+1);
+            }
+            else{
+                wordsMap.put(word, 1);
+            }
+        });
+        for(Map.Entry<String, Integer> entry : wordsMap.entrySet()){
+            System.out.println(entry.getKey() + " - " + entry.getValue());
         }
 
     }
@@ -61,7 +89,8 @@ public class Main {
         System.out.println("1 - Check duplicate words");
         System.out.println("2 - Check duplicate lines");
         System.out.println("3 - Find out how many times a word occurs in a text");
-        System.out.println("4 - Quit");
+        System.out.println("4 - Count how many times each word occurs in a text");
+        System.out.println("5 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
@@ -73,7 +102,6 @@ public class Main {
         if(answer)
              pattern= Pattern.compile("\\b" + word +"\\b");
         else {
-
             pattern=Pattern.compile(word, Pattern.CASE_INSENSITIVE);
         }
         Matcher matcher = pattern.matcher(text);
