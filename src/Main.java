@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Main {
@@ -19,7 +21,13 @@ public class Main {
                     System.out.println("Input your text");
                     checkDuplicateLines();
                 }
-                case 3 -> {
+                case 3 ->{
+                    System.out.println("Firstly, provide the text which will be used to count the number of occurrences of a word");
+                    System.out.println("Secondly, provide the word itself");
+                    System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                    findWord();
+                }
+                case 4 -> {
                     System.out.println("Goodbye");
                     return;
                 }
@@ -52,13 +60,55 @@ public class Main {
     public static void printMenu(){
         System.out.println("1 - Check duplicate words");
         System.out.println("2 - Check duplicate lines");
-        System.out.println("3 - Quit");
+        System.out.println("3 - Find out how many times a word occurs in a text");
+        System.out.println("4 - Quit");
+    }
+    public static void findWord(){
+        System.out.println("Enter the text");
+        String text = getInput(new Scanner(System.in)).toString();
+        System.out.println("Enter a word/sentence/etc.");
+        String word = getWord(new Scanner(System.in)).toString();
+        boolean answer = isStrict(new Scanner(System.in));
+        Pattern pattern;
+        if(answer)
+             pattern= Pattern.compile("\\b" + word +"\\b");
+        else {
+
+            pattern=Pattern.compile(word, Pattern.CASE_INSENSITIVE);
+        }
+        Matcher matcher = pattern.matcher(text);
+        int count = 0;
+        while(matcher.find()){
+            ++count;
+        }
+        if(count == 1){
+            System.out.println("The word " + word + " occurs " + 1 + " time in the text");
+        }
+        else{
+            System.out.println("The word " + word + " occurs " + count + " times in the text");
+        }
+
+    }
+    public static boolean isStrict(Scanner scanner){
+        System.out.println("Should it be an exact match?[y/n]");
+        String answer = scanner.nextLine();
+        return answer.equals("y");
+    }
+    public static StringBuilder getWord(Scanner scanner){
+        StringBuilder text2 = new StringBuilder();
+        String line;
+        while((line = scanner.nextLine()).length() != 0){
+            text2.append(line);
+
+        }
+        return text2;
     }
     public static StringBuilder getInput(Scanner scanner){
         StringBuilder text2 = new StringBuilder();
         String line;
-        while((line = scanner.nextLine()).length() != 0 && scanner.hasNextLine()){
+        while((line = scanner.nextLine()).length() != 0){
             text2.append(line).append('\n');
+
         }
         return text2;
     }
