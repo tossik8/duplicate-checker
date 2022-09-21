@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -40,7 +42,12 @@ public class Main {
                         System.out.println("Input your text");
                         findLongestWords();
                     }
-                    case 6 -> {
+                    case 6 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        showRepeatedWords();
+                    }
+                    case 7 -> {
                         System.out.println("Goodbye");
                         return;
                     }
@@ -56,6 +63,25 @@ public class Main {
             }
 
         }
+    }
+
+    public static void showRepeatedWords(){
+        String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
+        text = removePunctuation(text);
+        String[] words = text.split("\\s+");
+        Set<String> repeatedWordsSet = new HashSet<>();
+        Stream<String> repeatedWords = Arrays.stream(words).filter(word->{
+            if(repeatedWordsSet.contains(word)){
+                return true;
+            }
+            else {
+                repeatedWordsSet.add(word);
+                return false;
+            }
+        });
+        System.out.println(originalText);
+        repeatedWords.distinct().forEach(System.out::println);
+
     }
 
     public static void countEachWord() {
@@ -74,7 +100,6 @@ public class Main {
         for(Map.Entry<String, Integer> entry : wordsMap.entrySet()){
             System.out.println(entry.getKey() + " - " + entry.getValue());
         }
-
 
 
     }
@@ -126,7 +151,8 @@ public class Main {
         System.out.println("3 - Find out how many times a word occurs in a text");
         System.out.println("4 - Count how many times each word occurs in a text");
         System.out.println("5 - Find the longest words in a text");
-        System.out.println("6 - Quit");
+        System.out.println("6 - Show the words which are repeated in a text");
+        System.out.println("7 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
