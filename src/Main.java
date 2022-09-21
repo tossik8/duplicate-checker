@@ -1,14 +1,12 @@
-import java.awt.*;
-import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("Hello, you've started the Duplicate Checker Application");
         printMenu();
         Scanner scanner = new Scanner(System.in);
@@ -48,6 +46,11 @@ public class Main {
                         showRepeatedWords();
                     }
                     case 7 -> {
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        stringToInt();
+                    }
+                    case 8 ->{
                         System.out.println("Goodbye");
                         return;
                     }
@@ -58,8 +61,6 @@ public class Main {
                 System.out.println("Invalid input");
                 printMenu();
                 scanner.nextLine();
-
-
             }
 
         }
@@ -80,7 +81,18 @@ public class Main {
             }
         });
         System.out.println(originalText);
+        System.out.println("Repeated words:\n");
         repeatedWords.distinct().forEach(System.out::println);
+
+    }
+
+    public static void stringToInt(){
+        String originalText = getInput(new Scanner(System.in)).toString();
+        BigInteger totalValue = BigInteger.valueOf(0);
+        for(int i = 0; i < originalText.length(); ++i){
+            totalValue = totalValue.add(BigInteger.valueOf(originalText.charAt(i)));
+        }
+        System.out.println(totalValue);
 
     }
 
@@ -152,7 +164,8 @@ public class Main {
         System.out.println("4 - Count how many times each word occurs in a text");
         System.out.println("5 - Find the longest words in a text");
         System.out.println("6 - Show the words which are repeated in a text");
-        System.out.println("7 - Quit");
+        System.out.println("7 - Convert your text into a number");
+        System.out.println("8 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
