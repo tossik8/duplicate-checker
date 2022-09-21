@@ -1,19 +1,23 @@
+import java.awt.*;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
-    public static void main(String[] args){
+
+    public static void main(String[] args) throws IOException {
         System.out.println("Hello, you've started the Duplicate Checker Application");
         printMenu();
         Scanner scanner = new Scanner(System.in);
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             try {
                 switch (scanner.nextInt()) {
                     case 1 -> {
                         System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
                         System.out.println("Input your text");
                         checkDuplicateWords();
+
                     }
                     case 2 -> {
                         System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
@@ -31,7 +35,7 @@ public class Main {
                         System.out.println("Input your text");
                         countEachWord();
                     }
-                    case 5 ->{
+                    case 5 -> {
                         System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
                         System.out.println("Input your text");
                         findLongestWords();
@@ -43,16 +47,18 @@ public class Main {
                     default -> System.out.println("Wrong input");
                 }
                 printMenu();
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input");
                 printMenu();
                 scanner.nextLine();
+
+
             }
 
         }
-
     }
-    public static void countEachWord(){
+
+    public static void countEachWord() {
         String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
         text = removePunctuation(text);
         String[] words = text.split("\\s+");
@@ -68,6 +74,8 @@ public class Main {
         for(Map.Entry<String, Integer> entry : wordsMap.entrySet()){
             System.out.println(entry.getKey() + " - " + entry.getValue());
         }
+
+
 
     }
     public static void findLongestWords(){
@@ -170,18 +178,21 @@ public class Main {
         return  original;
     }
     public static void printWords(String original, String modified, String[] words, long distinct){
+        if(original.equals("")) return;
         System.out.println("Original text:\n" + original);
         System.out.println("Modified text:\n" + modified);
         if(words.length == 1){
-            System.out.println("There is " + 1 + " word in total");
+            System.out.println("There is 1 word in total");
         }
         else{
             System.out.println("There are " + words.length + " words in total");
         }
+
         if(distinct == 1){
-            System.out.println("There is " + 1 + " distinct word");
+            System.out.println("There is 1 distinct word");
         }
         else System.out.println("There are " + distinct + " distinct words");
+
     }
     public static void printLines(String original, String modified, String[] lines, long distinct){
         System.out.println("Original text:\n" + original);
