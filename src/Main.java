@@ -31,7 +31,12 @@ public class Main {
                         System.out.println("Input your text");
                         countEachWord();
                     }
-                    case 5 -> {
+                    case 5 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        findLongestWords();
+                    }
+                    case 6 -> {
                         System.out.println("Goodbye");
                         return;
                     }
@@ -65,10 +70,32 @@ public class Main {
         }
 
     }
+    public static void findLongestWords(){
+        String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
+        text = removePunctuation(text);
+        String[] words = text.split("\\s+");
+        Set<String> longestWords = new HashSet<>();
+        String longest = words[0];
+        for(int i = 1; i < words.length; ++i){
+            if(words[i].length() > longest.length()){
+                longest = words[i];
+            }
+        }
+        longestWords.add(longest);
+        for(int i = 1; i < words.length; ++i){
+            if(words[i].length() == longest.length()){
+                longestWords.add(words[i]);
+            }
+        }
+        for(String word : longestWords){
+            System.out.println(word + " - " + word.length() + " characters");
+        }
+
+    }
     public static void checkDuplicateWords(){
         String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
         text = removePunctuation(text);
-        String[] words = text.split("[\s\t\n]+");
+        String[] words = text.split("\\s+");
         long distinct  = Arrays.stream(words).distinct().count();
         StringBuilder sb = new StringBuilder();
         Arrays.stream(words).distinct().forEach(word -> sb.append(word).append(' '));
@@ -76,7 +103,7 @@ public class Main {
     }
     public static void checkDuplicateLines(){
         String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
-        String[] lines = text.split("[.!?\n]+");
+        String[] lines = text.split("[.!?]+ +|\n+");
         long distinct = Arrays.stream(lines).distinct().count();
         StringBuilder modified = new StringBuilder();
         Arrays.stream(lines).distinct().forEach(line->{
@@ -90,13 +117,14 @@ public class Main {
         System.out.println("2 - Check duplicate lines");
         System.out.println("3 - Find out how many times a word occurs in a text");
         System.out.println("4 - Count how many times each word occurs in a text");
-        System.out.println("5 - Quit");
+        System.out.println("5 - Find the longest words in a text");
+        System.out.println("6 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
         String text = getInput(new Scanner(System.in)).toString();
         System.out.println("Enter a word/sentence/etc.");
-        String word = getWord(new Scanner(System.in)).toString();
+        String word = new Scanner(System.in).nextLine();
         boolean answer = isStrict(new Scanner(System.in));
         Pattern pattern;
         if(answer)
@@ -110,10 +138,10 @@ public class Main {
             ++count;
         }
         if(count == 1){
-            System.out.println("The word " + word + " occurs " + 1 + " time in the text");
+            System.out.println("The word '"  +  word + "' occurs " + 1 + " time in the text");
         }
         else{
-            System.out.println("The word " + word + " occurs " + count + " times in the text");
+            System.out.println("The word '" + word + "' occurs " + count + " times in the text");
         }
 
     }
@@ -121,15 +149,6 @@ public class Main {
         System.out.println("Should it be an exact match?[y/n]");
         String answer = scanner.nextLine();
         return answer.equals("y");
-    }
-    public static StringBuilder getWord(Scanner scanner){
-        StringBuilder text2 = new StringBuilder();
-        String line;
-        while((line = scanner.nextLine()).length() != 0){
-            text2.append(line);
-
-        }
-        return text2;
     }
     public static StringBuilder getInput(Scanner scanner){
         StringBuilder text2 = new StringBuilder();
@@ -141,10 +160,11 @@ public class Main {
         return text2;
     }
     public static String removePunctuation(String original){
-        return original.replaceAll("[.!?]+","");
+        return original.replaceAll("[.!?]+ "," ");
     }
     public static String modifyInput(String original){
         original = original.trim();
+        original = original.replaceAll("[(){}\\[\\]]+","");
         original = original.replaceAll("[:;,-]+", "");
         original = original.replaceAll("([\"\\u2018\\u2019\\u201c\\u201d'])+(.+)\1+", "$2");
         return  original;
