@@ -11,50 +11,50 @@ public class Main {
         printMenu();
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
+
             try {
+                System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                System.out.println("Input your text");
                 switch (scanner.nextInt()) {
+
                     case 1 -> {
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                        System.out.println("Input your text");
+
                         checkDuplicateWords();
 
                     }
                     case 2 -> {
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                        System.out.println("Input your text");
                         checkDuplicateLines();
                     }
                     case 3 -> {
                         System.out.println("Firstly, provide the text which will be used to count the number of occurrences of a word");
                         System.out.println("Secondly, provide the word itself");
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
                         findWord();
                     }
                     case 4 -> {
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                        System.out.println("Input your text");
+
                         countEachWord();
                     }
                     case 5 -> {
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                        System.out.println("Input your text");
+
                         findLongestWords();
                     }
                     case 6 ->{
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                        System.out.println("Input your text");
+
                         showRepeatedWords();
                     }
                     case 7 -> {
-                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                        System.out.println("Input your text");
+
                         stringToInt();
                     }
                     case 8 ->{
+                        capitalizeEachWord();
+                    }
+                    case 9 ->{
                         System.out.println("Goodbye");
                         return;
                     }
                     default -> System.out.println("Wrong input");
+
                 }
                 printMenu();
             } catch (InputMismatchException e) {
@@ -64,6 +64,25 @@ public class Main {
             }
 
         }
+    }
+
+    public static void capitalizeEachWord(){
+        String originalText = getInput(new Scanner(System.in)).toString();
+        String[] words = originalText.split("\\s+");
+        originalText = "";
+        for(String s : words){
+            int index = 0;
+            while(s.length()>index && !(s.charAt(index)>= 'a' && s.charAt(index) <='z')){
+                if(s.charAt(index)>= 'A' && s.charAt(index) <='Z') index = s.length();
+                ++index;
+            }
+            if(index < s.length()){
+                s = s.substring(0, index) + (char)(s.charAt(index) - 32) + s.substring(index+1);
+            }
+            originalText+=s+" ";
+        }
+        System.out.println(originalText);
+
     }
 
     public static void showRepeatedWords(){
@@ -165,7 +184,8 @@ public class Main {
         System.out.println("5 - Find the longest words in a text");
         System.out.println("6 - Show the words which are repeated in a text");
         System.out.println("7 - Convert your text into a number");
-        System.out.println("8 - Quit");
+        System.out.println("8 - Capitalize each word");
+        System.out.println("9 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
