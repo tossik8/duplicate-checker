@@ -58,6 +58,11 @@ public class Main {
                         convertToToggleCase();
                     }
                     case 10 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        convertToSentenceCase();
+                    }
+                    case 11 ->{
                         System.out.println("Goodbye");
                         return;
                     }
@@ -73,15 +78,41 @@ public class Main {
         }
     }
 
+    public static void convertToSentenceCase(){
+        String originalText = getInput(new Scanner(System.in)).toString();
+        ArrayList<Character> punctuationMarks = new ArrayList<>();
+        for(int i = 0; i< originalText.length(); ++i){
+            char mark = originalText.charAt(i);
+            if(mark == '?' ||  mark  == '!' || mark =='.' || mark=='\n'){
+                punctuationMarks.add(mark);
+            }
+        }
+        String[] sentences = originalText.split("[?.!\n]+");
+        StringBuilder modifiedText = new StringBuilder();
+        int position = 0;
+        for(String sentence : sentences){
+            int index = findFirstLetter(sentence);
+            if(index == sentence.length()){
+                modifiedText.append(sentence).append(punctuationMarks.get(position));
+            }
+            else{
+                sentence = sentence.substring(0, index)+sentence.substring(index,index+1).toUpperCase() + sentence.substring(index+1);
+                modifiedText.append(sentence).append(punctuationMarks.get(position));
+            }
+            if(position+1<punctuationMarks.size()){
+                ++position;
+            }
+        }
+        System.out.println(modifiedText);
+    }
+
     public static void convertToToggleCase(){
         String originalText = getInput(new Scanner(System.in)).toString();
         StringBuilder toggleText = new StringBuilder();
         for(int i = 0; i < originalText.length();++i){
             if(originalText.charAt(i)>='a' && originalText.charAt(i) <='z'){
                 toggleText.append((char)(originalText.charAt(i) - 32));
-
             }
-
             else if(originalText.charAt(i) >='A' && originalText.charAt(i)<='Z'){
                 toggleText.append((char)(originalText.charAt(i) + 32));
             }
@@ -90,16 +121,31 @@ public class Main {
         System.out.println(toggleText);
     }
 
+    public static int findFirstLowerCaseLetter(String s){
+        int index = 0;
+        while(s.length()>index && !(s.charAt(index)>= 'a' && s.charAt(index) <='z')){
+            if(s.charAt(index)>= 'A' && s.charAt(index) <='Z') index = s.length();
+            ++index;
+        }
+        return index;
+    }
+
+    public static int findFirstLetter(String s){
+        int index = 0;
+        while(s.length()>index && !(s.charAt(index)>= 'a' && s.charAt(index) <='z' ||
+                s.charAt(index)>= 'A' && s.charAt(index) <='Z'||
+                s.charAt(index)>='0' && s.charAt(index) <='9')){
+            ++index;
+        }
+        return index;
+    }
+
     public static void capitalizeEachWord(){
         String originalText = getInput(new Scanner(System.in)).toString();
         String[] words = originalText.split("\\s+");
         originalText = "";
         for(String s : words){
-            int index = 0;
-            while(s.length()>index && !(s.charAt(index)>= 'a' && s.charAt(index) <='z')){
-                if(s.charAt(index)>= 'A' && s.charAt(index) <='Z') index = s.length();
-                ++index;
-            }
+            int index = findFirstLowerCaseLetter(s);
             if(index < s.length()){
                 s = s.substring(0, index) + (char)(s.charAt(index) - 32) + s.substring(index+1);
             }
@@ -203,9 +249,10 @@ public class Main {
         System.out.println("5 - Find the longest words in a text");
         System.out.println("6 - Show the words which are repeated in a text");
         System.out.println("7 - Convert your text into a number");
-        System.out.println("8 - Capitalize each word");
+        System.out.println("8 - Capitalize Each Word");
         System.out.println("9 - tOGGLE cASE");
-        System.out.println("10 - Quit");
+        System.out.println("10 - Sentence case.");
+        System.out.println("11 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
