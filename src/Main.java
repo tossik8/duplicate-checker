@@ -77,7 +77,6 @@ public class Main {
             }
         }
     }
-
     public static void convertToSentenceCase(){
         String originalText = getInput(new Scanner(System.in)).toString();
         ArrayList<Character> punctuationMarks = new ArrayList<>();
@@ -96,7 +95,7 @@ public class Main {
                 modifiedText.append(sentence).append(punctuationMarks.get(position));
             }
             else{
-                sentence = sentence.substring(0, index)+sentence.substring(index,index+1).toUpperCase() + sentence.substring(index+1);
+                sentence = sentence.substring(0, index)+sentence.substring(index,index+1).toUpperCase() + sentence.substring(index+1).toLowerCase();
                 modifiedText.append(sentence).append(punctuationMarks.get(position));
             }
             if(position+1<punctuationMarks.size()){
