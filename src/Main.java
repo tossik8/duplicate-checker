@@ -13,40 +13,46 @@ public class Main {
         while (scanner.hasNextLine()) {
 
             try {
-                System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
-                System.out.println("Input your text");
+
                 switch (scanner.nextInt()) {
-
                     case 1 -> {
-
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         checkDuplicateWords();
 
                     }
                     case 2 -> {
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         checkDuplicateLines();
                     }
                     case 3 -> {
-                        System.out.println("Firstly, provide the text which will be used to count the number of occurrences of a word");
-                        System.out.println("Secondly, provide the word itself");
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
                         findWord();
                     }
                     case 4 -> {
-
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         countEachWord();
                     }
                     case 5 -> {
-
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         findLongestWords();
                     }
                     case 6 ->{
-
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         showRepeatedWords();
                     }
                     case 7 -> {
-
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         stringToInt();
                     }
                     case 8 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
                         capitalizeEachWord();
                     }
                     case 9 ->{
@@ -58,10 +64,12 @@ public class Main {
                 }
                 printMenu();
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input");
+                System.out.println("\nInvalid input");
                 printMenu();
-                scanner.nextLine();
+                scanner = new Scanner(System.in);
+
             }
+
 
         }
     }
