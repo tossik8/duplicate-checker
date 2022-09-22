@@ -11,15 +11,12 @@ public class Main {
         printMenu();
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-
             try {
-
                 switch (scanner.nextInt()) {
                     case 1 -> {
                         System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
                         System.out.println("Input your text");
                         checkDuplicateWords();
-
                     }
                     case 2 -> {
                         System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
@@ -56,11 +53,15 @@ public class Main {
                         capitalizeEachWord();
                     }
                     case 9 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        convertToToggleCase();
+                    }
+                    case 10 ->{
                         System.out.println("Goodbye");
                         return;
                     }
                     default -> System.out.println("Wrong input");
-
                 }
                 printMenu();
             } catch (InputMismatchException e) {
@@ -69,9 +70,24 @@ public class Main {
                 scanner = new Scanner(System.in);
 
             }
-
-
         }
+    }
+
+    public static void convertToToggleCase(){
+        String originalText = getInput(new Scanner(System.in)).toString();
+        StringBuilder toggleText = new StringBuilder();
+        for(int i = 0; i < originalText.length();++i){
+            if(originalText.charAt(i)>='a' && originalText.charAt(i) <='z'){
+                toggleText.append((char)(originalText.charAt(i) - 32));
+
+            }
+
+            else if(originalText.charAt(i) >='A' && originalText.charAt(i)<='Z'){
+                toggleText.append((char)(originalText.charAt(i) + 32));
+            }
+            else toggleText.append(originalText.charAt(i));
+        }
+        System.out.println(toggleText);
     }
 
     public static void capitalizeEachWord(){
@@ -110,7 +126,6 @@ public class Main {
         System.out.println(originalText);
         System.out.println("Repeated words:\n");
         repeatedWords.distinct().forEach(System.out::println);
-
     }
 
     public static void stringToInt(){
@@ -120,7 +135,6 @@ public class Main {
             totalValue = totalValue.add(BigInteger.valueOf(originalText.charAt(i)));
         }
         System.out.println(totalValue);
-
     }
 
     public static void countEachWord() {
@@ -139,8 +153,6 @@ public class Main {
         for(Map.Entry<String, Integer> entry : wordsMap.entrySet()){
             System.out.println(entry.getKey() + " - " + entry.getValue());
         }
-
-
     }
     public static void findLongestWords(){
         String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
@@ -162,7 +174,6 @@ public class Main {
         for(String word : longestWords){
             System.out.println(word + " - " + word.length() + " characters");
         }
-
     }
     public static void checkDuplicateWords(){
         String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
@@ -193,7 +204,8 @@ public class Main {
         System.out.println("6 - Show the words which are repeated in a text");
         System.out.println("7 - Convert your text into a number");
         System.out.println("8 - Capitalize each word");
-        System.out.println("9 - Quit");
+        System.out.println("9 - tOGGLE cASE");
+        System.out.println("10 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
@@ -218,7 +230,6 @@ public class Main {
         else{
             System.out.println("The word '" + word + "' occurs " + count + " times in the text");
         }
-
     }
     public static boolean isStrict(Scanner scanner){
         System.out.println("Should it be an exact match?[y/n]");
@@ -259,7 +270,6 @@ public class Main {
             System.out.println("There is 1 distinct word");
         }
         else System.out.println("There are " + distinct + " distinct words");
-
     }
     public static void printLines(String original, String modified, String[] lines, long distinct){
         System.out.println("Original text:\n" + original);
