@@ -63,6 +63,11 @@ public class Main {
                         convertToSentenceCase();
                     }
                     case 11 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        convertToCamelCase();
+                    }
+                    case 12 ->{
                         System.out.println("Goodbye");
                         return;
                     }
@@ -77,29 +82,65 @@ public class Main {
             }
         }
     }
-    public static void convertToSentenceCase(){
+    public static void convertToCamelCase(){
         String originalText = getInput(new Scanner(System.in)).toString();
-        ArrayList<Character> punctuationMarks = new ArrayList<>();
-        for(int i = 0; i< originalText.length(); ++i){
-            char mark = originalText.charAt(i);
-            if(mark == '?' ||  mark  == '!' || mark =='.' || mark=='\n'){
-                punctuationMarks.add(mark);
+        originalText = modifyInput(originalText);
+        originalText = removeWeirdCharacters(originalText);
+        originalText = originalText.replaceAll("'","");
+        String[] sentences = originalText.split("[?.!]+");
+        StringBuilder modified = new StringBuilder();
+        for(String sentence: sentences){
+            sentence = sentence.toLowerCase();
+            for(int i = 0; i < sentence.length(); ++i){
+                if(sentence.charAt(i) == ' '){
+                    ++i;
+                    modified.append(sentence.substring(i, i+1).toUpperCase());
+                }
+                else if(Character.isDigit(sentence.charAt(i)) && i+1 < sentence.length() &&
+                        Character.isLetter(sentence.charAt(i+1))){
+                    modified.append(sentence.charAt(i)).append(sentence.substring(i+1, i+2).toUpperCase());
+                    ++i;
+                }
+                else{
+                    modified.append(sentence.charAt(i));
+                }
             }
         }
-        String[] sentences = originalText.split("[?.!\n]+");
+        System.out.println(modified);
+    }
+    public static String removeWeirdCharacters(String original){
+        original = original.replaceAll("[\\u005c@$#^&*><|/~№%+=_]+", "");
+        return original;
+    }
+
+    private static void getPunctuationMarks(String originalText, ArrayList<String> punctuationMarks) {
+        Pattern pattern = Pattern.compile("[.!?]+");
+        Matcher matcher = pattern.matcher(originalText);
+        while (matcher.find()){
+            int start = matcher.start();
+            int end = matcher.end();
+            punctuationMarks.add(originalText.substring(start,end));
+        }
+    }
+
+    public static void convertToSentenceCase(){
+        String originalText = getInput(new Scanner(System.in)).toString();
+        ArrayList<String> punctuationMarks = new ArrayList<>();
+        getPunctuationMarks(originalText, punctuationMarks);
+        String[] sentences = originalText.split("[?.!]+");
         StringBuilder modifiedText = new StringBuilder();
         int position = 0;
         for(String sentence : sentences){
             int index = findFirstLetter(sentence);
             if(index == sentence.length()){
-                modifiedText.append(sentence).append(punctuationMarks.get(position));
+                modifiedText.append(sentence);
             }
             else{
                 sentence = sentence.substring(0, index)+sentence.substring(index,index+1).toUpperCase() + sentence.substring(index+1).toLowerCase();
-                modifiedText.append(sentence).append(punctuationMarks.get(position));
+                modifiedText.append(sentence);
             }
-            if(position+1<punctuationMarks.size()){
-                ++position;
+            if(position<punctuationMarks.size()){
+                modifiedText.append(punctuationMarks.get(position++));
             }
         }
         System.out.println(modifiedText);
@@ -251,7 +292,8 @@ public class Main {
         System.out.println("8 - Capitalize Each Word");
         System.out.println("9 - tOGGLE cASE");
         System.out.println("10 - Sentence case.");
-        System.out.println("11 - Quit");
+        System.out.println("11 - camelCase");
+        System.out.println("12 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
