@@ -68,6 +68,10 @@ public class Main {
                         convertToCamelCase();
                     }
                     case 12 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        removeWords();
+                    }
+                    case 13 ->{
                         System.out.println("Goodbye");
                         return;
                     }
@@ -81,6 +85,14 @@ public class Main {
 
             }
         }
+    }
+    public static void removeWords(){
+        System.out.println("Enter the text");
+        String originalText = getInput(new Scanner(System.in)).toString();
+        System.out.println("Enter the word which should be removed");
+        String text = new Scanner(System.in).nextLine();
+        originalText = originalText.replaceAll("\\b" + text + "\\b", "");
+        System.out.println(originalText);
     }
     public static void convertToCamelCase(){
         String originalText = getInput(new Scanner(System.in)).toString();
@@ -293,7 +305,8 @@ public class Main {
         System.out.println("9 - tOGGLE cASE");
         System.out.println("10 - Sentence case.");
         System.out.println("11 - camelCase");
-        System.out.println("12 - Quit");
+        System.out.println("12 - Remove a word");
+        System.out.println("13 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
