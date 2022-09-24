@@ -72,6 +72,11 @@ public class Main {
                         removeWords();
                     }
                     case 13 ->{
+                        System.out.println("Once you are done typing and want to see the result, press Enter without providing any data");
+                        System.out.println("Input your text");
+                        convertToKebabCase();
+                    }
+                    case 14 ->{
                         System.out.println("Goodbye");
                         return;
                     }
@@ -85,6 +90,21 @@ public class Main {
 
             }
         }
+    }
+
+    public static void convertToKebabCase(){
+        String originalText = getInput(new Scanner(System.in)).toString();
+        String[] sentences = originalText.split("\n");
+        StringBuilder modified = new StringBuilder();
+        for(String sentence : sentences){
+            sentence= sentence.trim();
+            sentence= sentence.replaceAll("\"", "");
+            sentence= sentence.replaceAll("[\\s.&^#*+=@%,?!'(){}\\[\\]:<>/;\\u201c\\u201d\"`-]+", "-");
+            sentence= sentence.toLowerCase();
+            if(sentence.charAt(sentence.length() - 1) == '-') sentence = sentence.substring(0, sentence.length()-1);
+            modified.append(sentence).append('\n');
+        }
+        System.out.println(modified);
     }
     public static void removeWords(){
         System.out.println("Enter the text");
@@ -311,7 +331,8 @@ public class Main {
         System.out.println("10 - Sentence case.");
         System.out.println("11 - camelCase");
         System.out.println("12 - Remove a word");
-        System.out.println("13 - Quit");
+        System.out.println("13 - kebab-case");
+        System.out.println("14 - Quit");
     }
     public static void findWord(){
         System.out.println("Enter the text");
