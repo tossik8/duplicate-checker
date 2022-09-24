@@ -91,8 +91,8 @@ public class Main {
         String originalText = getInput(new Scanner(System.in)).toString();
         System.out.println("Enter the word which should be removed");
         String text = new Scanner(System.in).nextLine();
-        originalText = originalText.replaceAll("\\b" + text + "\\b", "");
-        System.out.println(originalText);
+        originalText = originalText.replaceAll("\\b"+text+"\\b", "");
+        System.out.println("After removal:\n" + originalText);
     }
     public static void convertToCamelCase(){
         String originalText = getInput(new Scanner(System.in)).toString();
@@ -126,7 +126,7 @@ public class Main {
     }
 
     private static void getPunctuationMarks(String originalText, ArrayList<String> punctuationMarks) {
-        Pattern pattern = Pattern.compile("[.!?]+");
+        Pattern pattern = Pattern.compile("[.!?\n]+");
         Matcher matcher = pattern.matcher(originalText);
         while (matcher.find()){
             int start = matcher.start();
@@ -139,7 +139,7 @@ public class Main {
         String originalText = getInput(new Scanner(System.in)).toString();
         ArrayList<String> punctuationMarks = new ArrayList<>();
         getPunctuationMarks(originalText, punctuationMarks);
-        String[] sentences = originalText.split("[?.!]+");
+        String[] sentences = originalText.split("[?.!\n]+");
         StringBuilder modifiedText = new StringBuilder();
         int position = 0;
         for(String sentence : sentences){
@@ -148,12 +148,14 @@ public class Main {
                 modifiedText.append(sentence);
             }
             else{
+
                 sentence = sentence.substring(0, index)+sentence.substring(index,index+1).toUpperCase() + sentence.substring(index+1).toLowerCase();
                 modifiedText.append(sentence);
             }
             if(position<punctuationMarks.size()){
                 modifiedText.append(punctuationMarks.get(position++));
             }
+
         }
         System.out.println(modifiedText);
     }
@@ -212,6 +214,7 @@ public class Main {
         text = removePunctuation(text);
         String[] words = text.split("\\s+");
         Set<String> repeatedWordsSet = new HashSet<>();
+
         Stream<String> repeatedWords = Arrays.stream(words).filter(word->{
             if(repeatedWordsSet.contains(word)){
                 return true;
@@ -284,11 +287,13 @@ public class Main {
     }
     public static void checkDuplicateLines(){
         String originalText = getInput(new Scanner(System.in)).toString(), text = modifyInput(originalText);
-        String[] lines = text.split("[.!?]+ +|\n+");
+        String[] lines = text.split("[.!?\n]+");
+        for(int i = 0; i< lines.length; ++i){
+            lines[i] = lines[i].trim();
+        }
         long distinct = Arrays.stream(lines).distinct().count();
         StringBuilder modified = new StringBuilder();
         Arrays.stream(lines).distinct().forEach(line->{
-            line = line.trim();
             modified.append(line).append('\n');
         });
         printLines(originalText, modified.toString(), lines, distinct);
@@ -351,9 +356,9 @@ public class Main {
     }
     public static String modifyInput(String original){
         original = original.trim();
-        original = original.replaceAll("[(){}\\[\\]]+","");
-        original = original.replaceAll("[:;,-]+", "");
-        original = original.replaceAll("([\"\\u2018\\u2019\\u201c\\u201d'])+(.+)\1+", "$2");
+        original = original.replaceAll("[(){}\\[\\]:;,\\u201c\\u201d\"`-]+", "");
+        original = original.replaceAll("('+)(.+)'", "$2");
+        original = original.replaceAll("\\u2018(.+)\\u2019", "$1");
         return  original;
     }
     public static void printWords(String original, String modified, String[] words, long distinct){
@@ -376,13 +381,13 @@ public class Main {
         System.out.println("Original text:\n" + original);
         System.out.println("Modified text:\n" + modified);
         if(lines.length == 1){
-            System.out.println("There is " + 1 + " line in total");
+            System.out.println("There is 1 line in total");
         }
         else{
             System.out.println("There are " + lines.length + " lines in total");
         }
         if(distinct == 1){
-            System.out.println("There is " + 1 + " distinct line");
+            System.out.println("There is 1 distinct line");
         }
         else System.out.println("There are " + distinct + " distinct lines");
     }
